@@ -6,20 +6,30 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { AlarmMap } from '../pages/map/map';
+import { AlarmList } from '../pages/alarm-list/alarm-list';
+import { Settings } from '../pages/settings/settings';
+
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': '8cfef068'
+  }
+};
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage
+    MyApp, HomePage, AlarmMap, AlarmList, Settings
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage
+    MyApp, HomePage, AlarmMap, AlarmList, Settings
   ],
   providers: [
     StatusBar,
