@@ -12,6 +12,8 @@ import { Settings } from '../pages/settings/settings';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
+import { GoogleMaps } from '@ionic-native/google-maps';
+
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': '8cfef068'
@@ -32,7 +34,7 @@ const cloudSettings: CloudSettings = {
     MyApp, HomePage, AlarmMap, AlarmList, Settings
   ],
   providers: [
-    StatusBar,
+    StatusBar, GoogleMaps,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
