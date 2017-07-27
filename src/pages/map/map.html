@@ -7,5 +7,12 @@
 </ion-header>
 
 <ion-content padding>
-  <div #map id="map" style="height:100%;"></div>
+  <div class="top-div">
+    <ion-card class="address-box">
+      <ion-card-content>
+        {{currentAddress}}
+      </ion-card-content>
+    </ion-card>
+    <div #map id="map" class="map"></div>
+  </div>
 </ion-content>

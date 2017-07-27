@@ -13,6 +13,7 @@ import { Settings } from '../pages/settings/settings';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { Geolocation } from '@ionic-native/geolocation';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -34,8 +35,7 @@ const cloudSettings: CloudSettings = {
     MyApp, HomePage, AlarmMap, AlarmList, Settings
   ],
   providers: [
-    StatusBar, GoogleMaps,
-    SplashScreen,
+    StatusBar, GoogleMaps, SplashScreen, Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
