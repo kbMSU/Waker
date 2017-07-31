@@ -8,11 +8,25 @@
 
 <ion-content padding>
   <div class="top-div">
+    <!--The box to display the current address-->
     <ion-card class="address-box">
       <ion-card-content>
         {{currentAddress}}
       </ion-card-content>
     </ion-card>
+
+    <!--The map will be displayed here-->
     <div #map id="map" class="map"></div>
+
+    <!--The button to set the alarm-->
+    <!--<button ion-button block (click)="addNewAlarm()"
+            class="add-alarm-button">
+      Add Alarm
+    </button>-->
+
+    <!--Marker indicating current location-->
+    <div class="current-location-marker">
+
+    </div>
   </div>
 </ion-content>
