@@ -19,7 +19,7 @@ export class AlarmMap {
   map: GoogleMap;
   currentAddress: string = "Getting Address ...";
   geocoder: Geocoder;
-  alarms: [{alarm: Alarm, marker: Marker}];
+  alarms: [{marker: Marker, alarm: Alarm}];
 
   constructor(private navCtrl: NavController,
               private googleMaps: GoogleMaps,
@@ -28,7 +28,6 @@ export class AlarmMap {
               private alarmService: AlarmService
               ) {
                 this.geocoder = new Geocoder();
-
               }
 
   ionViewDidLoad() {
@@ -46,7 +45,7 @@ export class AlarmMap {
     let element: HTMLElement = document.getElementById('map');
     this.map = this.googleMaps.create(element);
 
-    // When map is ready go to the current locatio and set alarm markers
+    // When map is ready go to the current location and set alarm markers
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.mapLoaded = true;
       this.goToCurrentLocation();
@@ -102,18 +101,18 @@ export class AlarmMap {
           marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
             // Show marker information
           });
-          this.alarms.push({alarm: alarm,marker: marker});
+          this.alarms.push({marker: marker, alarm: alarm});
         });
       }
     });
   }
 
-  addNewAlarm() {
-    // Add a new alarm
-  }
-
   viewAlarmDetails() {
     // If alarm marker is clicked then show the alarm details
+  }
+
+  addNewAlarm() {
+    // Add a new alarm
   }
 
   showMessage(msg: string) {
