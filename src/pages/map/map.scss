@@ -1,24 +1,26 @@
-.top-div {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
+alarm-map {
+  .top-div {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
 
-.map {
-  height: 110%;
-  width: 110%;
-  margin-left: -5%;
-  margin-top: -5%;
-}
+  .map {
+    height: 110%;
+    width: 110%;
+    margin-left: -5%;
+    margin-top: -5%;
+  }
 
-.address-box {
-  position: absolute;
-}
+  .address-box {
+    position: absolute;
+  }
 
-.add-alarm-button {
+  .add-alarm-button {
 
-}
+  }
 
-.current-location-marker {
-  
+  .current-location-marker {
+
+  }
 }

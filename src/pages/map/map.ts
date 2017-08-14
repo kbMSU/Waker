@@ -7,6 +7,8 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
 import { Observable } from 'rxjs/Observable';
 
+import { AlarmDetails } from '../alarm-details/alarm-details';
+
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
 
@@ -19,6 +21,7 @@ export class AlarmMap {
   map: GoogleMap;
   currentAddress: string = "Getting Address ...";
   geocoder: Geocoder;
+  currentPosition: LatLng;
   alarms: [{marker: Marker, alarm: Alarm}];
 
   constructor(private navCtrl: NavController,
@@ -37,6 +40,7 @@ export class AlarmMap {
   ionViewWillEnter() {
     if(this.mapLoaded) {
       this.goToCurrentLocation();
+      this.refreshAlarms();
     }
   }
 
@@ -55,6 +59,7 @@ export class AlarmMap {
     // If map is panned update address
     this.map.on(GoogleMapsEvent.CAMERA_CHANGE).subscribe((position) => {
       if(this.mapLoaded) {
+        this.currentPosition = position;
         this.updateAddress(position);
       }
     });
@@ -69,6 +74,7 @@ export class AlarmMap {
         target: location,
         zoom: 15
       }
+      this.currentPosition = location;
       this.map.moveCamera(mapPosition);
       this.updateAddress(location);
     }).catch((error) => {
@@ -98,13 +104,14 @@ export class AlarmMap {
           title: alarm.title
         }
         this.map.addMarker(options).then((marker: Marker) => {
-          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-            // Show marker information
-          });
-          this.alarms.push({marker: marker, alarm: alarm});
+          // Click on marker and view details
         });
       }
     });
+  }
+
+  refreshAlarms() {
+    // Refresh alarms if needed
   }
 
   viewAlarmDetails() {
@@ -112,7 +119,7 @@ export class AlarmMap {
   }
 
   addNewAlarm() {
-    // Add a new alarm
+    this.navCtrl.push(AlarmDetails,{location:this.currentPosition});
   }
 
   showMessage(msg: string) {

@@ -9,6 +9,7 @@ import { HomePage } from '../pages/home/home';
 import { AlarmMap } from '../pages/map/map';
 import { AlarmList } from '../pages/alarm-list/alarm-list';
 import { Settings } from '../pages/settings/settings';
+import { AlarmDetails } from '../pages/alarm-details/alarm-details';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
@@ -23,7 +24,7 @@ const cloudSettings: CloudSettings = {
 
 @NgModule({
   declarations: [
-    MyApp, HomePage, AlarmMap, AlarmList, Settings
+    MyApp, HomePage, AlarmMap, AlarmList, Settings, AlarmDetails
   ],
   imports: [
     BrowserModule,
