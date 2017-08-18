@@ -56,12 +56,9 @@ export class AlarmMap {
       this.placeAlarmMarkers();
     });
 
-    // If map is panned update address
-    this.map.on(GoogleMapsEvent.CAMERA_CHANGE).subscribe((position) => {
-      if(this.mapLoaded) {
-        this.currentPosition = position;
-        this.updateAddress(position);
-      }
+    // Change map center
+    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latlng: LatLng) => {
+      this.goToLocation(latlng.lat,latlng.lng);
     });
   }
 
@@ -69,17 +66,21 @@ export class AlarmMap {
     this.geolocation.getCurrentPosition().then((resp: Geoposition) => {
       let lat = resp.coords.latitude;
       let long = resp.coords.longitude;
-      let location = new LatLng(+lat,+long);
-      let mapPosition: CameraPosition = {
-        target: location,
-        zoom: 15
-      }
-      this.currentPosition = location;
-      this.map.moveCamera(mapPosition);
-      this.updateAddress(location);
+      this.goToLocation(lat,long);
     }).catch((error) => {
       this.showMessage(error);
     });
+  }
+
+  goToLocation(lat: number, lng: number) {
+    let location = new LatLng(+lat,+lng);
+    let mapPosition: CameraPosition = {
+      target: location,
+      zoom: 15
+    }
+    this.currentPosition = location;
+    this.map.moveCamera(mapPosition);
+    this.updateAddress(location);
   }
 
   updateAddress(latln: LatLng) {
@@ -119,7 +120,7 @@ export class AlarmMap {
   }
 
   addNewAlarm() {
-    this.navCtrl.push(AlarmDetails,{location:this.currentPosition});
+    this.navCtrl.push(AlarmDetails,{name:this.currentAddress,location:this.currentPosition,isNew:true});
   }
 
   showMessage(msg: string) {

@@ -10,6 +10,7 @@ import { AlarmMap } from '../pages/map/map';
 import { AlarmList } from '../pages/alarm-list/alarm-list';
 import { Settings } from '../pages/settings/settings';
 import { AlarmDetails } from '../pages/alarm-details/alarm-details';
+import { AlarmService } from '../services/alarm.service';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
@@ -36,7 +37,7 @@ const cloudSettings: CloudSettings = {
     MyApp, HomePage, AlarmMap, AlarmList, Settings
   ],
   providers: [
-    StatusBar, GoogleMaps, SplashScreen, Geolocation,
+    StatusBar, GoogleMaps, SplashScreen, Geolocation, AlarmService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
