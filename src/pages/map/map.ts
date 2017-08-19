@@ -17,11 +17,12 @@ import { AlarmService } from '../../services/alarm.service';
   templateUrl: 'map.html'
 })
 export class AlarmMap {
-  mapLoaded: boolean = false;
+  mapLoaded = false;
   map: GoogleMap;
-  currentAddress: string = "Getting Address ...";
+  currentAddress = "Getting Address ...";
   geocoder: Geocoder;
   currentPosition: LatLng;
+  newAlarmMarker: Marker = null;
   alarms: [{marker: Marker, alarm: Alarm}];
 
   constructor(private navCtrl: NavController,
@@ -38,10 +39,7 @@ export class AlarmMap {
   }
 
   ionViewWillEnter() {
-    if(this.mapLoaded) {
-      this.goToCurrentLocation();
-      this.refreshAlarms();
-    }
+    this.refreshAlarms();
   }
 
   loadMap() {
@@ -52,13 +50,28 @@ export class AlarmMap {
     // When map is ready go to the current location and set alarm markers
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.mapLoaded = true;
+
+      // Create the new alarm markers
+      let options: MarkerOptions = {
+        draggable: true,
+        icon: { url: 'www/assets/markers/newAlarmMarker.png' }
+      }
+      this.map.addMarker(options).then((marker: Marker) => {
+        marker.on(GoogleMapsEvent.MARKER_DRAG_END).subscribe((position: LatLng) => {
+          this.goToLocation(position.lat,position.lng,true);
+        });
+        this.newAlarmMarker = marker;
+      });
+
       this.goToCurrentLocation();
       this.placeAlarmMarkers();
     });
 
     // Change map center
     this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latlng: LatLng) => {
-      this.goToLocation(latlng.lat,latlng.lng);
+      if(this.mapLoaded) {
+        this.goToLocation(latlng.lat,latlng.lng,true);
+      }
     });
   }
 
@@ -66,29 +79,39 @@ export class AlarmMap {
     this.geolocation.getCurrentPosition().then((resp: Geoposition) => {
       let lat = resp.coords.latitude;
       let long = resp.coords.longitude;
-      this.goToLocation(lat,long);
+      this.goToLocation(lat,long,false);
     }).catch((error) => {
       this.showMessage(error);
     });
   }
 
-  goToLocation(lat: number, lng: number) {
+  goToLocation(lat: number, lng: number, animate: boolean) {
     let location = new LatLng(+lat,+lng);
+    this.updateAddress(location);
+    this.currentPosition = location;
+    this.newAlarmMarker.setPosition(location);
+
     let mapPosition: CameraPosition = {
       target: location,
       zoom: 15
     }
-    this.currentPosition = location;
-    this.map.moveCamera(mapPosition);
-    this.updateAddress(location);
+    if(animate) {
+      this.map.animateCamera({
+        target: location,
+        zoom: 15,
+        duration: 1000
+      });
+    } else {
+      this.map.moveCamera(mapPosition);
+    }
   }
 
   updateAddress(latln: LatLng) {
+    this.currentAddress = "Getting address ...";
     this.geocoder.geocode({'position':latln}).then((results: [GeocoderResult]) => {
       if(results.length > 0) {
         let result = results[0];
-        this.currentAddress = result.subThoroughfare + " " +
-                              result.thoroughfare;
+        this.currentAddress = result.subThoroughfare + " " + result.thoroughfare;
       } else {
         this.currentAddress = "Address not found ...";
       }
@@ -112,7 +135,7 @@ export class AlarmMap {
   }
 
   refreshAlarms() {
-    // Refresh alarms if needed
+
   }
 
   viewAlarmDetails() {
