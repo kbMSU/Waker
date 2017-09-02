@@ -143,7 +143,10 @@ export class AlarmMap {
   }
 
   addNewAlarm() {
-    this.navCtrl.push(AlarmDetails);
+    this.navCtrl.push(AlarmDetails,{
+      address: this.currentAddress,
+      position: this.currentPosition
+    });
   }
 
   showMessage(msg: string) {
