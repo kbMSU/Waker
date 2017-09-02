@@ -6,6 +6,6 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'alarm-details.html'
 })
 export class AlarmDetails {
-  constructor(private navParams: NavParams,
-              private navCtrl: NavController) {}
+  //constructor(private navParams: NavParams,
+  //            private navCtrl: NavController) {}
 }

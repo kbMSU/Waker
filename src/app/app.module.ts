@@ -34,7 +34,7 @@ const cloudSettings: CloudSettings = {
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp, HomePage, AlarmMap, AlarmList, Settings
+    MyApp, HomePage, AlarmMap, AlarmList, Settings, AlarmDetails
   ],
   providers: [
     StatusBar, GoogleMaps, SplashScreen, Geolocation, AlarmService,

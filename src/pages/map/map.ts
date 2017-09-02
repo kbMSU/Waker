@@ -25,7 +25,7 @@ export class AlarmMap {
   newAlarmMarker: Marker = null;
   alarms: [{marker: Marker, alarm: Alarm}];
 
-  constructor(private navCtrl: NavController,
+  constructor(public navCtrl: NavController,
               private googleMaps: GoogleMaps,
               private geolocation: Geolocation,
               private toastCtrl: ToastController,
@@ -143,7 +143,7 @@ export class AlarmMap {
   }
 
   addNewAlarm() {
-    this.navCtrl.push(AlarmDetails,{name:this.currentAddress,location:this.currentPosition,isNew:true});
+    this.navCtrl.push(AlarmDetails);
   }
 
   showMessage(msg: string) {
