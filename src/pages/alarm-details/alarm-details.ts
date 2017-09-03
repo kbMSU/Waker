@@ -9,15 +9,19 @@ import { LatLng } from '@ionic-native/google-maps';
 export class AlarmDetails {
   address: string;
   position: LatLng;
+  alarmName: string = "";
+  distance: number = 0;
 
   constructor(public navParams: NavParams,
               private navCtrl: NavController,
               private toastCtrl: ToastController) {
                 this.address = navParams.get('address');
                 this.position = navParams.get('position');
-
-                this.showMessage(this.position.lat+" "+this.position.lng);
               }
+
+  saveAlarm() {
+    this.showMessage(this.alarmName+" "+this.distance);
+  }
 
   showMessage(msg: string) {
     this.toastCtrl.create({

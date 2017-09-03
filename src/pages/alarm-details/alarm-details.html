@@ -4,4 +4,49 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>I'm the other page!</ion-content>
+<ion-content padding>
+  <div class="top-div">
+    <!--Alarm name input-->
+    <ion-item class="name-input">
+      <ion-label stacked>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="alarmName" placeholder="Enter a name for the alarm"></ion-input>
+    </ion-item>
+    <!--Alarm address box-->
+    <ion-grid class="address-box">
+      <ion-row>
+        <ion-label>Address</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-card>
+          <ion-card-content>
+            {{address}}
+          </ion-card-content>
+        </ion-card>
+      </ion-row>
+    </ion-grid>
+    <!--Range in Km-->
+    <ion-grid class="range-slider">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            Distance (km)
+            <ion-badge item-end>{{distance}}</ion-badge>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-range min="0" max="100" [(ngModel)]="distance">
+            <ion-label range-left>0</ion-label>
+            <ion-label range-right>100</ion-label>
+          </ion-range>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!--Save Alarm Button-->
+    <button ion-button block (click)="saveAlarm()"
+            class="save-alarm-button">
+      Save Alarm
+    </button>
+  </div>
+</ion-content>
