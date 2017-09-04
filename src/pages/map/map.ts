@@ -38,10 +38,6 @@ export class AlarmMap {
     this.loadMap();
   }
 
-  ionViewWillEnter() {
-    this.refreshAlarms();
-  }
-
   loadMap() {
     // Create the map
     let element: HTMLElement = document.getElementById('map');
@@ -132,10 +128,6 @@ export class AlarmMap {
         });
       }
     });
-  }
-
-  refreshAlarms() {
-
   }
 
   viewAlarmDetails() {

@@ -23,6 +23,14 @@ export class AlarmDetails {
     this.showMessage(this.alarmName+" "+this.distance);
   }
 
+  onNameInput() {
+
+  }
+
+  onRangeChange() {
+    
+  }
+
   showMessage(msg: string) {
     this.toastCtrl.create({
       message: msg,
