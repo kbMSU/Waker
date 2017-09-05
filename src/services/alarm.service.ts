@@ -35,8 +35,8 @@ export class AlarmService {
     alarm.id = this.newId;
 
     this.storage.set(this.newId.toString(),alarm).then((val) => {
-      this.events.publish('alarm:saved',alarm);
       this.alarms.push(alarm);
+      this.events.publish('alarm:changed');
       return true;
     });
 
@@ -47,6 +47,7 @@ export class AlarmService {
     this.storage.set(alarm.id.toString(), alarm).then((val) => {
       var index = this.alarms.indexOf(alarm);
       this.alarms[index] = alarm;
+      this.events.publish('alarm:changed');
       return true;
     });
 
@@ -57,6 +58,7 @@ export class AlarmService {
     this.storage.remove(alarm.id.toString()).then((val) => {
       var index = this.alarms.indexOf(alarm);
       this.alarms.splice(index,1);
+      this.events.publish('alarm:changed');
       return true;
     });
 

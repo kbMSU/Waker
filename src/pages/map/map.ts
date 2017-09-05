@@ -60,7 +60,7 @@ export class AlarmMap {
       });
 
       this.goToCurrentLocation();
-      this.placeAlarmMarkers();
+      this.alarmSetup();
     });
 
     // Change map center
@@ -69,6 +69,14 @@ export class AlarmMap {
         this.goToLocation(latlng.lat,latlng.lng,true);
       }
     });
+  }
+
+  alarmSetup() {
+    // Set up a subscription to get future alarms
+
+    // Get all alarms
+
+    // Place alarm markers
   }
 
   goToCurrentLocation() {
