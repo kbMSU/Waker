@@ -117,7 +117,7 @@ export class AlarmMap {
   }
 
   placeAlarmMarkers() {
-    this.alarmService.getAlarms().then(alarms => {
+    /*this.alarmService.getAlarms().then(alarms => {
       for(var alarm of alarms) {
         let options: MarkerOptions = {
           position: alarm.position,
@@ -127,7 +127,7 @@ export class AlarmMap {
           // Click on marker and view details
         });
       }
-    });
+    });*/
   }
 
   viewAlarmDetails() {
@@ -137,7 +137,8 @@ export class AlarmMap {
   addNewAlarm() {
     this.navCtrl.push(AlarmDetails,{
       address: this.currentAddress,
-      position: this.currentPosition
+      position: this.currentPosition,
+      isNew: true
     });
   }
 
