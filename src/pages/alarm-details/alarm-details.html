@@ -51,7 +51,9 @@
     </ion-grid>
     <!--Save Alarm Button-->
     <button ion-button block (click)="saveAlarm()"
-            class="save-alarm-button">
+            class="save-alarm-button"
+            [disabled]="!canSave"
+            [color]="canSave ? 'primary' : 'light'">
       Save Alarm
     </button>
   </div>

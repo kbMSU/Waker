@@ -11,6 +11,7 @@ export class AlarmDetails {
   position: LatLng;
   alarmName: string = "";
   distance: number = 0;
+  canSave: boolean = false;
 
   constructor(public navParams: NavParams,
               private navCtrl: NavController,
@@ -20,15 +21,26 @@ export class AlarmDetails {
               }
 
   saveAlarm() {
-    this.showMessage(this.alarmName+" "+this.distance);
+    //this.showMessage(this.alarmName+" "+this.distance);
+    if(this.canSave) {
+      // Save Alarm
+    }
   }
 
   onNameInput() {
-
+    this.checkCanSave();
   }
 
   onRangeChange() {
-    
+    this.checkCanSave();
+  }
+
+  checkCanSave() {
+    if(this.alarmName && this.distance) {
+      this.canSave = true;
+    } else {
+      this.canSave = false;
+    }
   }
 
   showMessage(msg: string) {
