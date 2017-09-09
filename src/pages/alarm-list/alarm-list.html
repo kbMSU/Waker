@@ -7,5 +7,19 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button>Light 2</button>
+  <div class="top-div">
+    <ion-list no-lines>
+      <div *ngFor="let alarm of alarms">
+        <ion-card class="alarm-card">
+          <ion-grid>
+            <ion-row>
+              <ion-item>
+                <ion-label>{{alarm.title}}</ion-label>
+              </ion-item>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </div>
+    </ion-list>
+  </div>
 </ion-content>

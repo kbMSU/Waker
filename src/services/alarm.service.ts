@@ -13,7 +13,7 @@ export class AlarmService {
               public events: Events) {}
 
   loadAlarms() {
-    this.alarms = new Array<Alarm>();
+    this.alarms = [];
     // Get all keys stored
     this.storage.keys().then((keys: string[]) => {
       for(let key of keys) {
@@ -22,9 +22,11 @@ export class AlarmService {
           this.alarms.push(alarm);
         });
       }
+      // Update the next id to save as
+      this.newId = this.alarms.length;
+      // Publish that alarms have been updated
+      this.events.publish("alarm:changed");
     });
-    // Update the next id to save as
-    this.newId = this.alarms.length;
   }
 
   getAlarms(): Alarm[] {
@@ -36,7 +38,7 @@ export class AlarmService {
 
     this.storage.set(this.newId.toString(),alarm).then((val) => {
       this.alarms.push(alarm);
-      this.events.publish('alarm:changed');
+      this.events.publish("alarm:changed");
       return true;
     });
 
@@ -47,7 +49,7 @@ export class AlarmService {
     this.storage.set(alarm.id.toString(), alarm).then((val) => {
       var index = this.alarms.indexOf(alarm);
       this.alarms[index] = alarm;
-      this.events.publish('alarm:changed');
+      this.events.publish("alarm:changed");
       return true;
     });
 
@@ -58,7 +60,7 @@ export class AlarmService {
     this.storage.remove(alarm.id.toString()).then((val) => {
       var index = this.alarms.indexOf(alarm);
       this.alarms.splice(index,1);
-      this.events.publish('alarm:changed');
+      this.events.publish("alarm:changed");
       return true;
     });
 

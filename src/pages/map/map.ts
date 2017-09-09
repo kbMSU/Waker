@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, Events } from 'ionic-angular';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, LatLng,
          CameraPosition, MarkerOptions, Marker, Geocoder,
          GeocoderResult } from '@ionic-native/google-maps';
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { AlarmDetails } from '../alarm-details/alarm-details';
 
 import { Alarm } from '../../models/alarm';
+import { AlarmMarker } from '../../models/alarmMarker';
 import { AlarmService } from '../../services/alarm.service';
 
 @Component({
@@ -23,13 +24,14 @@ export class AlarmMap {
   geocoder: Geocoder;
   currentPosition: LatLng;
   newAlarmMarker: Marker = null;
-  alarms: [{marker: Marker, alarm: Alarm}];
+  alarms: AlarmMarker[];
 
   constructor(public navCtrl: NavController,
               private googleMaps: GoogleMaps,
               private geolocation: Geolocation,
               private toastCtrl: ToastController,
-              private alarmService: AlarmService
+              private alarmService: AlarmService,
+              public events: Events
               ) {
                 this.geocoder = new Geocoder();
               }
@@ -73,10 +75,12 @@ export class AlarmMap {
 
   alarmSetup() {
     // Set up a subscription to get future alarms
+    this.events.subscribe("alarm:changed", () => {
+      this.placeAlarmMarkers();
+    });
 
-    // Get all alarms
-
-    // Place alarm markers
+    // Place existing alarms
+    this.placeAlarmMarkers();
   }
 
   goToCurrentLocation() {
@@ -125,17 +129,27 @@ export class AlarmMap {
   }
 
   placeAlarmMarkers() {
-    /*this.alarmService.getAlarms().then(alarms => {
-      for(var alarm of alarms) {
-        let options: MarkerOptions = {
-          position: alarm.position,
-          title: alarm.title
-        }
-        this.map.addMarker(options).then((marker: Marker) => {
-          // Click on marker and view details
-        });
+    // Clear existing markers
+    for(var alarm of this.alarms) {
+      alarm.marker.remove();
+    }
+    this.alarms = [];
+
+    // Get alarms and poplate markers
+    let alarms = this.alarmService.getAlarms();
+    for(var a of alarms) {
+      let options: MarkerOptions = {
+        position: a.position,
+        title: a.title,
+        draggable: false
       }
-    });*/
+      this.map.addMarker(options).then((marker: Marker) => {
+        // Add marker and alarm to list
+        this.alarms.push(new AlarmMarker(a,marker));
+        // Click on marker and view details
+        // ## TODO ##
+      });
+    }
   }
 
   viewAlarmDetails() {
