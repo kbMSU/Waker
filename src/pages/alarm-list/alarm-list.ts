@@ -13,8 +13,7 @@ export class AlarmList {
 
   constructor(private navCtrl: NavController,
               private alarmService: AlarmService,
-              public events: Events)
-              {
+              public events: Events) {
                 // Set up a subscription to get future alarms
                 events.subscribe("alarm:changed", () => {
                   this.refreshAlarms();
@@ -26,5 +25,17 @@ export class AlarmList {
 
   refreshAlarms() {
     this.alarms = this.alarmService.getAlarms();
+  }
+
+  deleteAlarm(alarm: Alarm) {
+
+  }
+
+  updateAlarm(alarm: Alarm) {
+
+  }
+
+  switchAlarmState(alarm: Alarm) {
+    
   }
 }
