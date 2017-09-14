@@ -40,6 +40,13 @@ export class AlarmMap {
     this.loadMap();
   }
 
+  /*ionViewWillEnter() {
+    if(this.mapLoaded) {
+      this.placeAlarmMarkers();
+      //this.showMessage("Entering View")
+    }
+  }*/
+
   loadMap() {
     // Create the map
     let element: HTMLElement = document.getElementById('map');
@@ -75,12 +82,9 @@ export class AlarmMap {
 
   alarmSetup() {
     // Set up a subscription to get future alarms
-    this.events.subscribe("alarm:changed", () => {
+    this.events.subscribe("alarm:loaded", () => {
       this.placeAlarmMarkers();
     });
-
-    // Place existing alarms
-    this.placeAlarmMarkers();
   }
 
   goToCurrentLocation() {

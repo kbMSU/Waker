@@ -15,7 +15,7 @@ export class AlarmService {
   loadAlarms() {
     this.alarms = [];
     // Get all keys stored
-    this.storage.keys().then((keys: string[]) => {
+    /*this.storage.keys().then((keys: string[]) => {
       for(let key of keys) {
         // Get the alarm for each key
         this.storage.get(key).then((alarm: Alarm) => {
@@ -25,31 +25,33 @@ export class AlarmService {
       // Update the next id to save as
       this.newId = this.alarms.length;
       // Publish that alarms have been updated
-      this.events.publish("alarm:changed");
-    });
+      this.events.publish("alarm:loaded");
+    });*/
+    this.storage.clear();
+    this.events.publish("alarm:loaded");
   }
 
   getAlarms(): Alarm[] {
     return this.alarms;
   }
 
-  addAlarm(alarm: Alarm): boolean {
+  addAlarm(alarm: Alarm) {
     alarm.id = this.newId;
 
-    this.storage.set(this.newId.toString(),alarm).then((val) => {
+    this.storage.set(this.newId.toString(),alarm).then((val:any) => {
       this.alarms.push(alarm);
-      this.events.publish("alarm:changed");
-      return true;
+      this.newId += 1;
+      this.events.publish('alarm:created');
+    }).catch((error) => {
+      this.events.publish("alarm:error",error);
     });
-
-    return false
   }
 
   updateAlarm(alarm: Alarm): boolean {
     this.storage.set(alarm.id.toString(), alarm).then((val) => {
       var index = this.alarms.indexOf(alarm);
       this.alarms[index] = alarm;
-      this.events.publish("alarm:changed");
+      this.events.publish("alarm:updated");
       return true;
     });
 
@@ -60,7 +62,7 @@ export class AlarmService {
     this.storage.remove(alarm.id.toString()).then((val) => {
       var index = this.alarms.indexOf(alarm);
       this.alarms.splice(index,1);
-      this.events.publish("alarm:changed");
+      this.events.publish("alarm:deleted");
       return true;
     });
 
