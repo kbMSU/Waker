@@ -15,20 +15,15 @@ export class AlarmService {
   loadAlarms() {
     this.alarms = [];
     // Get all keys stored
-    /*this.storage.keys().then((keys: string[]) => {
-      for(let key of keys) {
-        // Get the alarm for each key
-        this.storage.get(key).then((alarm: Alarm) => {
-          this.alarms.push(alarm);
-        });
-      }
+    this.storage.get('alarms').then((val: Alarm[]) => {
+      this.alarms = val;
       // Update the next id to save as
       this.newId = this.alarms.length;
       // Publish that alarms have been updated
       this.events.publish("alarm:loaded");
-    });*/
-    this.storage.clear();
-    this.events.publish("alarm:loaded");
+    })
+    //this.storage.clear();
+    //this.events.publish("alarm:loaded");
   }
 
   getAlarms(): Alarm[] {
@@ -36,11 +31,14 @@ export class AlarmService {
   }
 
   addAlarm(alarm: Alarm) {
+    // Save in memory
     alarm.id = this.newId;
+    this.alarms.push(alarm);
+    // Increment next alarm id
+    this.newId += 1;
 
-    this.storage.set(this.newId.toString(),alarm).then((val:any) => {
-      this.alarms.push(alarm);
-      this.newId += 1;
+    // Persist on device
+    this.storage.set('alarms',this.alarms).then((val) => {
       this.events.publish('alarm:created');
     }).catch((error) => {
       this.events.publish("alarm:error",error);
