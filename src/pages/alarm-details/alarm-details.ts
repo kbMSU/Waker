@@ -24,17 +24,24 @@ export class AlarmDetails {
                 this.address = navParams.get('address');
                 this.position = navParams.get('position');
                 this.isNew = navParams.get('new');
-
-                this.events.subscribe("alarm:created", () => {
-                  this.showMessage("Added new alarm");
-                  this.navCtrl.pop();
-                });
-
-                this.events.subscribe("alarm:error", (error) => {
-                  this.showMessage("There was an issue saving the alarm");
-                  //this.showMessage(error);
-                });
               }
+
+  ionViewWillEnter() {
+    this.events.subscribe("alarm:created", () => {
+      this.showMessage("Added new alarm");
+      this.navCtrl.pop();
+    });
+
+    this.events.subscribe("alarm:error", (error) => {
+      this.showMessage("There was an issue saving the alarm");
+      //this.showMessage(error);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("alarm:created");
+    this.events.unsubscribe("alarm:error");
+  }
 
   saveAlarm() {
     if(this.canSave) {

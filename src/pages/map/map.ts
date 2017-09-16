@@ -40,12 +40,18 @@ export class AlarmMap {
     this.loadMap();
   }
 
-  /*ionViewWillEnter() {
-    if(this.mapLoaded) {
-      this.placeAlarmMarkers();
-      //this.showMessage("Entering View")
-    }
-  }*/
+  ionViewWillEnter() {
+    // Set up a subscription to get future alarms
+    this.events.subscribe("alarm:loaded", () => {
+      if(this.mapLoaded) {
+        this.placeAlarmMarkers();
+      }
+    });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe("alarm:loaded");
+  }
 
   loadMap() {
     // Create the map
@@ -69,7 +75,6 @@ export class AlarmMap {
       });
 
       this.goToCurrentLocation();
-      this.alarmSetup();
     });
 
     // Change map center
@@ -77,13 +82,6 @@ export class AlarmMap {
       if(this.mapLoaded) {
         this.goToLocation(latlng.lat,latlng.lng,true);
       }
-    });
-  }
-
-  alarmSetup() {
-    // Set up a subscription to get future alarms
-    this.events.subscribe("alarm:loaded", () => {
-      this.placeAlarmMarkers();
     });
   }
 

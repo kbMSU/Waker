@@ -14,7 +14,7 @@ export class AlarmService {
 
   loadAlarms() {
     this.alarms = [];
-    // Get all keys stored
+    // Get all alarms
     this.storage.get('alarms').then((val: Alarm[]) => {
       this.alarms = val;
       // Update the next id to save as
