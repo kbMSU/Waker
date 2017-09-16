@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController, Events } from 'ionic-angular';
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
-import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'alarm-list',
@@ -13,19 +12,10 @@ export class AlarmList {
 
   constructor(private navCtrl: NavController,
               private alarmService: AlarmService,
+              private toastCtrl: ToastController,
               public events: Events) {
-                // Set up a subscription to get future alarms
-                events.subscribe("alarm:changed", () => {
-                  this.refreshAlarms();
-                });
-
-                // Get existing alarms
-                this.refreshAlarms();
+                this.alarms = this.alarmService.getAlarms();
               }
-
-  refreshAlarms() {
-    this.alarms = this.alarmService.getAlarms();
-  }
 
   deleteAlarm(alarm: Alarm) {
 
@@ -36,6 +26,14 @@ export class AlarmList {
   }
 
   switchAlarmState(alarm: Alarm) {
-    
+
+  }
+
+  showMessage(msg: string) {
+    this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      position: 'bottom'
+    }).present();
   }
 }

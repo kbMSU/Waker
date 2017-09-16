@@ -8,6 +8,7 @@ import { Events } from 'ionic-angular';
 export class AlarmService {
   private newId: number = 0;
   private alarms: Alarm[];
+  private updateAvailable: boolean;
 
   constructor(private storage: Storage,
               public events: Events) {}
@@ -26,6 +27,10 @@ export class AlarmService {
     //this.events.publish("alarm:loaded");
   }
 
+  isUpdateAvailable(): boolean {
+    return this.updateAvailable;
+  }
+
   getAlarms(): Alarm[] {
     return this.alarms;
   }
@@ -36,6 +41,8 @@ export class AlarmService {
     this.alarms.push(alarm);
     // Increment next alarm id
     this.newId += 1;
+    // Mark that an update is available
+    this.updateAvailable = true;
 
     // Persist on device
     this.storage.set('alarms',this.alarms).then((val) => {
@@ -45,25 +52,33 @@ export class AlarmService {
     });
   }
 
-  updateAlarm(alarm: Alarm): boolean {
-    this.storage.set(alarm.id.toString(), alarm).then((val) => {
-      var index = this.alarms.indexOf(alarm);
-      this.alarms[index] = alarm;
-      this.events.publish("alarm:updated");
-      return true;
-    });
+  updateAlarm(alarm: Alarm) {
+    // Save in memory
+    var index = this.alarms.indexOf(alarm);
+    this.alarms[index] = alarm;
+    // Mark that an update is available
+    this.updateAvailable = true;
 
-    return false;
+    // Persist on device
+    this.storage.set('alarms',this.alarms).then((val) => {
+      this.events.publish('alarm:updated');
+    }).catch((error) => {
+      this.events.publish("alarm:error",error);
+    });
   }
 
-  deleteAlarm(alarm: Alarm): boolean {
-    this.storage.remove(alarm.id.toString()).then((val) => {
-      var index = this.alarms.indexOf(alarm);
-      this.alarms.splice(index,1);
-      this.events.publish("alarm:deleted");
-      return true;
-    });
+  deleteAlarm(alarm: Alarm) {
+    // Save in memory
+    var index = this.alarms.indexOf(alarm);
+    this.alarms.splice(index,1);
+    // Mark that an update is available
+    this.updateAvailable = true;
 
-    return false;
+    // Persist on device
+    this.storage.set('alarms',this.alarms).then((val) => {
+      this.events.publish('alarm:deleted');
+    }).catch((error) => {
+      this.events.publish("alarm:error",error);
+    });
   }
 }

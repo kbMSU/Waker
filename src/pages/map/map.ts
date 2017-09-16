@@ -35,6 +35,7 @@ export class AlarmMap {
               ) {
                 this.geocoder = new Geocoder();
                 this.alarms = [];
+                //this.showMessage("map construct");
               }
 
   ionViewDidLoad() {
@@ -48,8 +49,10 @@ export class AlarmMap {
         this.placeAlarmMarkers();
       }
     });
+  }
 
-    if(this.mapLoaded) {
+  ionViewDidEnter() {
+    if(this.alarmService.isUpdateAvailable() && this.mapLoaded) {
       this.placeAlarmMarkers();
     }
   }
@@ -145,12 +148,8 @@ export class AlarmMap {
       this.alarms = [];
     }
 
-    //this.showMessage("called placeAlarmMarkers");
-
     // Get alarms and poplate markers
     let alarms = this.alarmService.getAlarms();
-
-    //this.showMessage("called placeAlarmMarkers");
 
     for(var a of alarms) {
       let options: MarkerOptions = {
