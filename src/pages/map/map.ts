@@ -34,6 +34,7 @@ export class AlarmMap {
               public events: Events
               ) {
                 this.geocoder = new Geocoder();
+                this.alarms = [];
               }
 
   ionViewDidLoad() {
@@ -47,6 +48,10 @@ export class AlarmMap {
         this.placeAlarmMarkers();
       }
     });
+
+    if(this.mapLoaded) {
+      this.placeAlarmMarkers();
+    }
   }
 
   ionViewWillLeave() {
@@ -75,6 +80,7 @@ export class AlarmMap {
       });
 
       this.goToCurrentLocation();
+      this.placeAlarmMarkers();
     });
 
     // Change map center
@@ -132,13 +138,20 @@ export class AlarmMap {
 
   placeAlarmMarkers() {
     // Clear existing markers
-    for(var alarm of this.alarms) {
-      alarm.marker.remove();
+    if(this.alarms) {
+      for(var alarm of this.alarms) {
+        alarm.marker.remove();
+      }
+      this.alarms = [];
     }
-    this.alarms = [];
+
+    //this.showMessage("called placeAlarmMarkers");
 
     // Get alarms and poplate markers
     let alarms = this.alarmService.getAlarms();
+
+    //this.showMessage("called placeAlarmMarkers");
+
     for(var a of alarms) {
       let options: MarkerOptions = {
         position: a.position,
