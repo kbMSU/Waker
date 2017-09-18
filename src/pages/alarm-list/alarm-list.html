@@ -8,18 +8,17 @@
 
 <ion-content padding>
   <div class="top-div">
-    <ion-list no-lines>
-      <div *ngFor="let alarm of alarms">
-        <ion-card class="alarm-card">
-          <ion-grid>
-            <ion-row>
-              <ion-item>
-                <ion-label>{{alarm.title}}</ion-label>
-              </ion-item>
-            </ion-row>
-          </ion-grid>
-        </ion-card>
-      </div>
+    <ion-list>
+      <ion-item-sliding *ngFor="let alarm of alarms">
+        <ion-item>
+          {{alarm.title}}
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="danger">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </div>
 </ion-content>

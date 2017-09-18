@@ -35,7 +35,6 @@ export class AlarmMap {
               ) {
                 this.geocoder = new Geocoder();
                 this.alarms = [];
-                //this.showMessage("map construct");
               }
 
   ionViewDidLoad() {
