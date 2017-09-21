@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController, Events } from 'ionic-angular';
+import { NavController, ToastController, Events,
+         ActionSheetController } from 'ionic-angular';
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
 
@@ -13,6 +14,7 @@ export class AlarmList {
   constructor(private navCtrl: NavController,
               private alarmService: AlarmService,
               private toastCtrl: ToastController,
+              private actionSheetCtrl: ActionSheetController,
               public events: Events) {
                 this.alarms = this.alarmService.getAlarms();
               }
@@ -27,6 +29,33 @@ export class AlarmList {
 
   switchAlarmState(alarm: Alarm) {
 
+  }
+
+  showActions(alarm: Alarm) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Choose action for "'+alarm.title+'"',
+      buttons: [
+        {
+          text: 'Update',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },{
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   showMessage(msg: string) {

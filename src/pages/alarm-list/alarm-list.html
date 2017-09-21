@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <div class="top-div">
     <ion-list>
       <ion-item-sliding *ngFor="let alarm of alarms">
@@ -16,6 +16,15 @@
         <ion-item-options side="right">
           <button ion-button color="danger">
             <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+          <button ion-button color="primary">
+            <ion-icon name="hammer"></ion-icon>
+            Update
+          </button>
+          <button ion-button color="light">
+            <ion-icon name="close"></ion-icon>
+            Cancel
           </button>
         </ion-item-options>
       </ion-item-sliding>
