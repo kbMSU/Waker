@@ -9,9 +9,16 @@
 <ion-content>
   <div class="top-div">
     <ion-list>
-      <ion-item-sliding *ngFor="let alarm of alarms">
+      <ion-item-sliding *ngFor="let alarm of alarms" #slidingItem>
         <ion-item>
-          {{alarm.title}}
+          <ion-grid>
+            <ion-row>
+              {{alarm.title}}
+            </ion-row>
+            <ion-row>
+              {{alarm.address}}
+            </ion-row>
+          </ion-grid>
         </ion-item>
         <ion-item-options side="right">
           <button ion-button color="danger">
@@ -22,7 +29,7 @@
             <ion-icon name="hammer"></ion-icon>
             Update
           </button>
-          <button ion-button color="light">
+          <button ion-button color="light" (click)="closeSlide(slidingItem)">
             <ion-icon name="close"></ion-icon>
             Cancel
           </button>

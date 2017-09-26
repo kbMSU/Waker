@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, Events,
-         ActionSheetController } from 'ionic-angular';
+         ActionSheetController, ItemSliding } from 'ionic-angular';
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
 
@@ -29,6 +29,10 @@ export class AlarmList {
 
   switchAlarmState(alarm: Alarm) {
 
+  }
+
+  closeSlide(slidingItem: ItemSliding) {
+    slidingItem.close();
   }
 
   showActions(alarm: Alarm) {
