@@ -52,10 +52,10 @@ export class AlarmService {
     });
   }
 
-  updateAlarm(alarm: Alarm) {
+  updateAlarm(oldAlarm: Alarm, newAlarm: Alarm) {
     // Save in memory
-    var index = this.alarms.indexOf(alarm);
-    this.alarms[index] = alarm;
+    var index = this.alarms.indexOf(oldAlarm);
+    this.alarms[index] = newAlarm;
     // Mark that an update is available
     this.updateAvailable = true;
 

@@ -3,6 +3,7 @@ import { NavController, ToastController, Events,
          ActionSheetController, ItemSliding } from 'ionic-angular';
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
+import { AlarmDetails } from '../alarm-details/alarm-details';
 
 @Component({
   selector: 'alarm-list',
@@ -24,7 +25,10 @@ export class AlarmList {
   }
 
   updateAlarm(alarm: Alarm) {
-
+    this.navCtrl.push(AlarmDetails,{
+      isNew: false,
+      alarm: alarm
+    });
   }
 
   switchAlarmState(alarm: Alarm) {

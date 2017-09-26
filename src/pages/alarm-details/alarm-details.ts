@@ -15,20 +15,37 @@ export class AlarmDetails {
   distance: number = 0;
   canSave: boolean = false;
   isNew: boolean = true;
+  alarmId: number;
+  oldAlarm: Alarm;
 
   constructor(public navParams: NavParams,
               private navCtrl: NavController,
               private toastCtrl: ToastController,
               private alarmService: AlarmService,
               public events: Events) {
-                this.address = navParams.get('address');
-                this.position = navParams.get('position');
                 this.isNew = navParams.get('new');
+                if(this.isNew) {
+                  this.address = navParams.get('address');
+                  this.position = navParams.get('position');
+                } else {
+                  this.oldAlarm = navParams.get('alarm');
+                  this.alarmName = this.oldAlarm.title;
+                  this.distance = this.oldAlarm.distance;
+                  this.position = this.oldAlarm.position;
+                  this.address = this.oldAlarm.address;
+                  this.alarmId = this.oldAlarm.id;
+                  this.checkCanSave();
+                }
               }
 
   ionViewWillEnter() {
     this.events.subscribe("alarm:created", () => {
       this.showMessage("Added new alarm");
+      this.navCtrl.pop();
+    });
+
+    this.events.subscribe("alarm:updated", () => {
+      this.showMessage("Updated alarm");
       this.navCtrl.pop();
     });
 
@@ -40,13 +57,22 @@ export class AlarmDetails {
 
   ionViewWillLeave() {
     this.events.unsubscribe("alarm:created");
+    this.events.unsubscribe("alarm:updated");
     this.events.unsubscribe("alarm:error");
   }
 
   saveAlarm() {
     if(this.canSave) {
-      var alarm = new Alarm(this.alarmName,this.address,this.position,this.distance,true);
-      this.alarmService.addAlarm(alarm);
+      if(this.isNew) {
+        // Add new alarm
+        var alarm = new Alarm(this.alarmName,this.address,this.position,this.distance,true);
+        this.alarmService.addAlarm(alarm);
+      } else {
+        // Update alarm
+        var alarm = new Alarm(this.alarmName,this.address,this.position,this.distance,true);
+        alarm.id = this.alarmId;
+        this.alarmService.updateAlarm(this.oldAlarm,alarm);
+      }
     }
   }
 
