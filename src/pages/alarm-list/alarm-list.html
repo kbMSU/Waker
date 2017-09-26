@@ -10,7 +10,7 @@
   <div class="top-div">
     <ion-list>
       <ion-item-sliding *ngFor="let alarm of alarms" #slidingItem>
-        <ion-item>
+        <ion-item (click)="showActions(alarm)">
           <ion-grid>
             <ion-row>
               {{alarm.title}}

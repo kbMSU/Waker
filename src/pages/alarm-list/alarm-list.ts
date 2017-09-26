@@ -41,20 +41,23 @@ export class AlarmList {
       buttons: [
         {
           text: 'Update',
+          icon: 'hammer',
           handler: () => {
             console.log('Archive clicked');
           }
         },{
           text: 'Delete',
           role: 'destructive',
+          icon: 'trash',
           handler: () => {
             console.log('Destructive clicked');
           }
         },{
           text: 'Cancel',
           role: 'cancel',
+          icon: 'close',
           handler: () => {
-            console.log('Cancel clicked');
+            // Do nothing
           }
         }
       ]
