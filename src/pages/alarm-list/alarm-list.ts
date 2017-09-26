@@ -20,7 +20,7 @@ export class AlarmList {
               }
 
   deleteAlarm(alarm: Alarm) {
-
+    this.alarmService.deleteAlarm(alarm);
   }
 
   updateAlarm(alarm: Alarm) {
@@ -43,14 +43,14 @@ export class AlarmList {
           text: 'Update',
           icon: 'hammer',
           handler: () => {
-            console.log('Archive clicked');
+            this.updateAlarm(alarm);
           }
         },{
           text: 'Delete',
           role: 'destructive',
           icon: 'trash',
           handler: () => {
-            console.log('Destructive clicked');
+            this.deleteAlarm(alarm);
           }
         },{
           text: 'Cancel',

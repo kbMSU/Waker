@@ -21,11 +21,11 @@
           </ion-grid>
         </ion-item>
         <ion-item-options side="right">
-          <button ion-button color="danger">
+          <button ion-button color="danger" (click)="deleteAlarm(alarm)">
             <ion-icon name="trash"></ion-icon>
             Delete
           </button>
-          <button ion-button color="primary">
+          <button ion-button color="primary" (click)="updateAlarm(alarm)">
             <ion-icon name="hammer"></ion-icon>
             Update
           </button>
