@@ -29,7 +29,7 @@ export class AlarmDetails {
                   this.position = navParams.get('position');
                 } else {
                   this.oldAlarm = navParams.get('alarm');
-                  
+
                   this.alarmName = this.oldAlarm.title;
                   this.distance = this.oldAlarm.distance;
                   this.position = this.oldAlarm.position;
@@ -64,13 +64,23 @@ export class AlarmDetails {
 
   saveAlarm() {
     if(this.canSave) {
+      // Does this name already exist
+      if(this.alarmService.doesNameExist(this.alarmName)) {
+        // Is this an update and we are just keeping the name ?
+        if(!this.isNew && this.oldAlarm.title === this.alarmName) {
+          // This is fine
+        } else {
+          this.showMessage("Another alarm already has the same name !")
+          return;
+        }
+      }
+
+      var alarm = new Alarm(this.alarmName,this.address,this.position,this.distance,true);
       if(this.isNew) {
         // Add new alarm
-        var alarm = new Alarm(this.alarmName,this.address,this.position,this.distance,true);
         this.alarmService.addAlarm(alarm);
       } else {
         // Update alarm
-        var alarm = new Alarm(this.alarmName,this.address,this.position,this.distance,true);
         alarm.id = this.alarmId;
         this.alarmService.updateAlarm(this.oldAlarm,alarm);
       }

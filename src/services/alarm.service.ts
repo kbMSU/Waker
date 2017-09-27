@@ -35,6 +35,16 @@ export class AlarmService {
     return this.alarms;
   }
 
+  doesNameExist(name: string): boolean {
+    for(let alarm of this.alarms) {
+      if(alarm.title === name) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   addAlarm(alarm: Alarm) {
     // Save in memory
     alarm.id = this.newId;
