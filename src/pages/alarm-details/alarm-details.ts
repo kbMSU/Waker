@@ -29,6 +29,7 @@ export class AlarmDetails {
                   this.position = navParams.get('position');
                 } else {
                   this.oldAlarm = navParams.get('alarm');
+                  
                   this.alarmName = this.oldAlarm.title;
                   this.distance = this.oldAlarm.distance;
                   this.position = this.oldAlarm.position;

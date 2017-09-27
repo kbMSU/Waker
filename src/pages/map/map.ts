@@ -52,6 +52,13 @@ export class AlarmMap {
         this.placeAlarmMarkers();
       }
     });
+
+    // When an alarm is deleted
+    this.events.subscribe("alarm:deleted", () => {
+      if(this.mapLoaded) {
+        this.placeAlarmMarkers();
+      }
+    });
   }
 
   ionViewDidEnter() {
@@ -62,6 +69,7 @@ export class AlarmMap {
 
   ionViewWillLeave() {
     this.events.unsubscribe("alarm:loaded");
+    this.events.unsubscribe("alarm:deleted");
   }
 
   loadMap() {
@@ -225,11 +233,14 @@ export class AlarmMap {
   }
 
   updateAlarm(alarm: Alarm) {
-
+    this.navCtrl.push(AlarmDetails,{
+      isNew: false,
+      alarm: alarm
+    });
   }
 
   deleteAlarm(alarm: Alarm) {
-
+    this.alarmService.deleteAlarm(alarm);
   }
 
   showMessage(msg: string) {
