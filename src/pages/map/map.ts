@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController, Events } from 'ionic-angular';
+import { NavController, ToastController, Events, ActionSheetController } from 'ionic-angular';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, LatLng,
          CameraPosition, MarkerOptions, Marker, Geocoder,
          GeocoderResult } from '@ionic-native/google-maps';
@@ -24,17 +24,21 @@ export class AlarmMap {
   geocoder: Geocoder;
   currentPosition: LatLng;
   newAlarmMarker: Marker = null;
-  alarms: AlarmMarker[];
+  //alarms: AlarmMarker[];
+  markers: Marker[];
+  alarms: Alarm[];
 
   constructor(public navCtrl: NavController,
               private googleMaps: GoogleMaps,
               private geolocation: Geolocation,
               private toastCtrl: ToastController,
               private alarmService: AlarmService,
+              private actionSheetCtrl: ActionSheetController,
               public events: Events
               ) {
                 this.geocoder = new Geocoder();
                 this.alarms = [];
+                this.markers = [];
               }
 
   ionViewDidLoad() {
@@ -141,9 +145,10 @@ export class AlarmMap {
   placeAlarmMarkers() {
     // Clear existing markers
     if(this.alarms) {
-      for(var alarm of this.alarms) {
-        alarm.marker.remove();
+      for(var m of this.markers) {
+        m.remove();
       }
+      this.markers = [];
       this.alarms = [];
     }
 
@@ -151,22 +156,64 @@ export class AlarmMap {
     let alarms = this.alarmService.getAlarms();
 
     for(var a of alarms) {
+      this.alarms.push(a);
       let options: MarkerOptions = {
         position: a.position,
         title: a.title,
-        draggable: false
+        draggable: false,
+        snippet: 'Click here to view actions'
       }
       this.map.addMarker(options).then((marker: Marker) => {
         // Add marker and alarm to list
-        this.alarms.push(new AlarmMarker(a,marker));
+        this.markers.push(marker);
         // Click on marker and view details
-        // ## TODO ##
+        marker.on(GoogleMapsEvent.INFO_CLICK).subscribe(() => {
+          this.viewAlarmActions(marker);
+        });
       });
     }
   }
 
-  viewAlarmDetails() {
-    // If alarm marker is clicked then show the alarm details
+  viewAlarmActions(marker: Marker) {
+    var alarm: Alarm = null;
+    for(var a of this.alarms) {
+      if(a.title === marker.getTitle()) {
+        alarm = a;
+        break;
+      }
+    }
+
+    if(!alarm) {
+      this.showMessage("Could not find the matching alarm :(");
+      return;
+    }
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Choose action for "'+alarm.title+'"',
+      buttons: [
+        {
+          text: 'Update',
+          icon: 'hammer',
+          handler: () => {
+            this.updateAlarm(alarm);
+          }
+        },{
+          text: 'Delete',
+          role: 'destructive',
+          icon: 'trash',
+          handler: () => {
+            this.deleteAlarm(alarm);
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          icon: 'close',
+          handler: () => {
+            // Do nothing
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   addNewAlarm() {
@@ -175,6 +222,14 @@ export class AlarmMap {
       position: this.currentPosition,
       isNew: true
     });
+  }
+
+  updateAlarm(alarm: Alarm) {
+
+  }
+
+  deleteAlarm(alarm: Alarm) {
+
   }
 
   showMessage(msg: string) {

@@ -23,7 +23,7 @@ export class AlarmDetails {
               private toastCtrl: ToastController,
               private alarmService: AlarmService,
               public events: Events) {
-                this.isNew = navParams.get('new');
+                this.isNew = navParams.get('isNew');
                 if(this.isNew) {
                   this.address = navParams.get('address');
                   this.position = navParams.get('position');
