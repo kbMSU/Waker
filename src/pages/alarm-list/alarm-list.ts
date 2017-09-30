@@ -32,7 +32,7 @@ export class AlarmList {
   }
 
   switchAlarmState(alarm: Alarm) {
-
+    this.showMessage("This alarm is :" + alarm.on);
   }
 
   closeSlide(slidingItem: ItemSliding) {

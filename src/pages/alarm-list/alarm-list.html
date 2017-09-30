@@ -13,10 +13,19 @@
         <ion-item (click)="showActions(alarm)">
           <ion-grid>
             <ion-row>
-              {{alarm.title}}
-            </ion-row>
-            <ion-row>
-              {{alarm.address}}
+              <ion-col col-8>
+                <ion-row>
+                  {{alarm.title}}
+                </ion-row>
+                <ion-row>
+                  {{alarm.address}}
+                </ion-row>
+              </ion-col>
+              <ion-col col-4>
+                <ion-item no-lines>
+                  <ion-toggle [(ngModel)]="alarm.on" (ionChange)="switchAlarmState(alarm)"></ion-toggle>
+                </ion-item>
+              </ion-col>
             </ion-row>
           </ion-grid>
         </ion-item>

@@ -90,6 +90,11 @@
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyD437s094I9PE1au2L9eMnF5R8CJFOAzQU" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyCsjgdgO6Gb3Xdnwia7l9gval_1Duiqfp4" />
     </plugin>
+    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="^2.2.5">
+        <variable name="ACCOUNT_TYPE" value="$PACKAGE_NAME.account" />
+        <variable name="CONTENT_AUTHORITY" value="$PACKAGE_NAME" />
+        <variable name="ALWAYS_USAGE_DESCRIPTION" value="This app requires background location tracking" />
+    </plugin>
     <plugin name="cordova-plugin-nativegeocoder" spec="^2.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.2" />
