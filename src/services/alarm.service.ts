@@ -78,6 +78,9 @@ export class AlarmService {
   }
 
   switchAlarmState() {
+    // Mark that an update is available
+    this.updateAvailable = true;
+    // Persist on device
     this.storage.set('alarms',this.alarms).then((val) => {
       this.events.publish('alarm:updated');
     }).catch((error) => {

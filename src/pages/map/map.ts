@@ -165,11 +165,18 @@ export class AlarmMap {
 
     for(var a of alarms) {
       this.alarms.push(a);
+      var iconUrl: string
+      if(a.on) {
+        iconUrl = 'www/assets/markers/marker-on.png'
+      } else {
+        iconUrl = 'www/assets/markers/marker-off.png'
+      }
       let options: MarkerOptions = {
         position: a.position,
         title: a.title,
         draggable: false,
-        snippet: 'Click here to view actions'
+        snippet: 'Click here to view actions',
+        icon: { url: iconUrl }
       }
       this.map.addMarker(options).then((marker: Marker) => {
         // Add marker and alarm to list
