@@ -77,6 +77,14 @@ export class AlarmService {
     });
   }
 
+  switchAlarmState() {
+    this.storage.set('alarms',this.alarms).then((val) => {
+      this.events.publish('alarm:updated');
+    }).catch((error) => {
+      this.events.publish("alarm:error",error);
+    });
+  }
+
   deleteAlarm(alarm: Alarm) {
     // Save in memory
     var index = this.alarms.indexOf(alarm);

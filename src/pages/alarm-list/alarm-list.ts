@@ -32,7 +32,8 @@ export class AlarmList {
   }
 
   switchAlarmState(alarm: Alarm) {
-    this.showMessage("This alarm is :" + alarm.on);
+    //this.showMessage("This alarm is :" + alarm.on);
+    this.alarmService.switchAlarmState();
   }
 
   closeSlide(slidingItem: ItemSliding) {
