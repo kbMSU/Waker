@@ -299,25 +299,18 @@ export class AlarmMap {
     this.backgroundGeo.configure(config)
       .subscribe((location: BackgroundGeolocationResponse) => {
         console.log(location);
-        //this.showMessage("BGL - Number of alarms : "+this.alarms.length);
-
-        this.nativeAudio.play('alarmSound');
 
         let lat1 = location.latitude;
         let lon1 = location.longitude;
 
         for(var alarm of this.alarms) {
-          //this.showMessage("Alarm : "+alarm.title);
           if(alarm.on) {
-            //this.showMessage("Alarm is on");
             let lat2 = alarm.position.lat;
             let lon2 = alarm.position.lng;
             let distance = this.calculateDistance(lat1,lon1,lat2,lon2);
             if(distance < alarm.distance * 1000) {
               // We are within distance
-              this.showMessage("We are WITHIN range, distance is : "+distance);
-            } else {
-              this.showMessage("We are OUTSIDE range, distance is : "+distance);
+              this.nativeAudio.play('alarmSound');
             }
           }
         }
