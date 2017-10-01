@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Save Alarm</ion-title>
   </ion-navbar>
 </ion-header>
@@ -51,7 +51,7 @@
     <button ion-button block (click)="saveAlarm()"
             class="save-alarm-button"
             [disabled]="!canSave"
-            [color]="canSave ? 'primary' : 'light'">
+            [color]="canSave ? 'secondary' : 'light'">
       Save Alarm
     </button>
   </div>
