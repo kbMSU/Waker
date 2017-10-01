@@ -13,11 +13,11 @@ import { Settings } from '../pages/settings/settings';
 import { AlarmDetails } from '../pages/alarm-details/alarm-details';
 import { AlarmService } from '../services/alarm.service';
 
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
-import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -40,7 +40,7 @@ const cloudSettings: CloudSettings = {
     MyApp, HomePage, AlarmMap, AlarmList, Settings, AlarmDetails
   ],
   providers: [
-    StatusBar, GoogleMaps, SplashScreen, Geolocation, AlarmService, BackgroundGeolocation,
+    StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
