@@ -193,7 +193,7 @@ export class AlarmMap {
       });
     }
 
-    if(!this.backgroundGeoStarted) {
+    if(this.shouldBackgroundGeoBeOn() && !this.backgroundGeoStarted) {
       this.startBackgroundGeo();
     }
   }
@@ -259,6 +259,28 @@ export class AlarmMap {
     this.alarmService.deleteAlarm(alarm);
   }
 
+  shouldBackgroundGeoBeOn(): boolean {
+    if(this.alarms == null || this.alarms.length == 0) {
+      this.backgroundGeo.stop();
+      this.backgroundGeoStarted = false;
+      return false;
+    } else {
+      var anyActiveAlarm: boolean = false;
+      for(var alarm of this.alarms) {
+        if(alarm.on) {
+          anyActiveAlarm = true;
+        }
+      }
+      if(!anyActiveAlarm) {
+        this.backgroundGeo.stop();
+        this.backgroundGeoStarted = false;
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   startBackgroundGeo() {
     // Start the background geolocation for the alarms
     const config: BackgroundGeolocationConfig = {
@@ -268,12 +290,6 @@ export class AlarmMap {
           debug: false, //  enable this hear sounds for background-geolocation life-cycle.
           stopOnTerminate: false, // enable this to clear background location settings when the app terminates
     };
-
-    if(this.alarms == null || this.alarms.length == 0) {
-      this.backgroundGeo.stop();
-      this.backgroundGeoStarted = false;
-      return;
-    }
 
     this.backgroundGeo.configure(config)
       .subscribe((location: BackgroundGeolocationResponse) => {
