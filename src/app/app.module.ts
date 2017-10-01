@@ -15,7 +15,7 @@ import { AlarmService } from '../services/alarm.service';
 
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
-
+import { NativeAudio } from '@ionic-native/native-audio';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -40,7 +40,7 @@ const cloudSettings: CloudSettings = {
     MyApp, HomePage, AlarmMap, AlarmList, Settings, AlarmDetails
   ],
   providers: [
-    StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService,
+    StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService, NativeAudio
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
