@@ -40,7 +40,7 @@ const cloudSettings: CloudSettings = {
     MyApp, HomePage, AlarmMap, AlarmList, Settings, AlarmDetails
   ],
   providers: [
-    StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService, NativeAudio
+    StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService, NativeAudio,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -12,6 +12,7 @@ import { AlarmDetails } from '../alarm-details/alarm-details';
 import { Alarm } from '../../models/alarm';
 import { AlarmMarker } from '../../models/alarmMarker';
 import { AlarmService } from '../../services/alarm.service';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 
@@ -38,11 +39,15 @@ export class AlarmMap {
               private alarmService: AlarmService,
               private actionSheetCtrl: ActionSheetController,
               private backgroundGeo: BackgroundGeolocation,
+              private nativeAudio: NativeAudio,
               public events: Events
               ) {
                 this.geocoder = new Geocoder();
                 this.alarms = [];
                 this.markers = [];
+                this.nativeAudio.preloadSimple('alarmSound', 'assets/sounds/alarm.wav').catch((error) => {
+                  this.showMessage("There was an error loading the alarm sound");
+                });
                 //this.alarms = this.alarmService.getAlarms();
               }
 
@@ -285,8 +290,8 @@ export class AlarmMap {
     // Start the background geolocation for the alarms
     const config: BackgroundGeolocationConfig = {
           desiredAccuracy: 10,
-          stationaryRadius: 20,
-          distanceFilter: 30,
+          stationaryRadius: 10,
+          distanceFilter: 10,
           debug: false, //  enable this hear sounds for background-geolocation life-cycle.
           stopOnTerminate: false, // enable this to clear background location settings when the app terminates
     };
@@ -295,6 +300,8 @@ export class AlarmMap {
       .subscribe((location: BackgroundGeolocationResponse) => {
         console.log(location);
         //this.showMessage("BGL - Number of alarms : "+this.alarms.length);
+
+        this.nativeAudio.play('alarmSound');
 
         let lat1 = location.latitude;
         let lon1 = location.longitude;
