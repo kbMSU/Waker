@@ -10,7 +10,6 @@ import { Observable } from 'rxjs/Observable';
 import { AlarmDetails } from '../alarm-details/alarm-details';
 
 import { Alarm } from '../../models/alarm';
-import { AlarmMarker } from '../../models/alarmMarker';
 import { AlarmService } from '../../services/alarm.service';
 import { NativeAudio } from '@ionic-native/native-audio';
 
