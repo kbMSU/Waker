@@ -39,6 +39,9 @@ export class AlarmDetails {
                 }
               }
 
+  /*
+    When entering the view, subscribe to the alarm events
+  */
   ionViewWillEnter() {
     this.events.subscribe("alarm:created", () => {
       this.showMessage("Added new alarm");
@@ -52,24 +55,32 @@ export class AlarmDetails {
 
     this.events.subscribe("alarm:error", (error) => {
       this.showMessage("There was an issue saving the alarm");
-      //this.showMessage(error);
     });
   }
 
+  /*
+    When leaving the view unsubscribe from the alarm events
+  */
   ionViewWillLeave() {
     this.events.unsubscribe("alarm:created");
     this.events.unsubscribe("alarm:updated");
     this.events.unsubscribe("alarm:error");
   }
 
+  /*
+    Save the alarm. Create it or Update it.
+  */
   saveAlarm() {
+    // Can we save it ?
     if(this.canSave) {
       // Does this name already exist
       if(this.alarmService.doesNameExist(this.alarmName)) {
         // Is this an update and we are just keeping the name ?
         if(!this.isNew && this.oldAlarm.title === this.alarmName) {
-          // This is fine
+          // If the name is the same but it is just an update of an existing alarm
+          // then it is fine
         } else {
+          // Cant update the name of an alarm to the same name of another alarm
           this.showMessage("Another alarm already has the same name !")
           return;
         }
@@ -87,14 +98,23 @@ export class AlarmDetails {
     }
   }
 
+  /*
+    When the name input is changed
+  */
   onNameInput() {
     this.checkCanSave();
   }
 
+  /*
+    When the range input is changed
+  */
   onRangeChange() {
     this.checkCanSave();
   }
 
+  /*
+    Can only save if the alarm name and distance have been entered
+  */
   checkCanSave() {
     if(this.alarmName && this.distance) {
       this.canSave = true;
@@ -103,6 +123,9 @@ export class AlarmDetails {
     }
   }
 
+  /*
+    Show a toast message
+  */
   showMessage(msg: string) {
     this.toastCtrl.create({
       message: msg,
