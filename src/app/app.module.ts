@@ -12,12 +12,16 @@ import { AlarmList } from '../pages/alarm-list/alarm-list';
 import { Settings } from '../pages/settings/settings';
 import { AlarmDetails } from '../pages/alarm-details/alarm-details';
 import { AlarmService } from '../services/alarm.service';
+import { MathService } from '../services/math.service';
+import { BackgroundGeoService } from '../services/background-geo.service';
 
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
+
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -41,6 +45,7 @@ const cloudSettings: CloudSettings = {
   ],
   providers: [
     StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService, NativeAudio,
+    LocalNotifications, MathService, BackgroundGeoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

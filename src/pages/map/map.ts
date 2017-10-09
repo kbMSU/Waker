@@ -4,6 +4,8 @@ import { GoogleMaps, GoogleMap, GoogleMapsEvent, LatLng,
          CameraPosition, MarkerOptions, Marker, Geocoder,
          GeocoderResult } from '@ionic-native/google-maps';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { NativeAudio } from '@ionic-native/native-audio';
+import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -11,9 +13,8 @@ import { AlarmDetails } from '../alarm-details/alarm-details';
 
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
-import { NativeAudio } from '@ionic-native/native-audio';
-
-import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
+import { MathService } from '../../services/math.service';
+import { BackgroundGeoService } from '../../services/background-geo.service';
 
 @Component({
   selector: 'alarm-map',
@@ -26,10 +27,8 @@ export class AlarmMap {
   geocoder: Geocoder;
   currentPosition: LatLng;
   newAlarmMarker: Marker = null;
-  //alarms: AlarmMarker[];
   markers: Marker[];
   alarms: Alarm[];
-  backgroundGeoStarted: boolean = false;
 
   constructor(public navCtrl: NavController,
               private googleMaps: GoogleMaps,
@@ -37,17 +36,12 @@ export class AlarmMap {
               private toastCtrl: ToastController,
               private alarmService: AlarmService,
               private actionSheetCtrl: ActionSheetController,
-              private backgroundGeo: BackgroundGeolocation,
-              private nativeAudio: NativeAudio,
-              public events: Events
+              public events: Events,
+              private backgroundGeoService: BackgroundGeoService
               ) {
                 this.geocoder = new Geocoder();
                 this.alarms = [];
                 this.markers = [];
-                this.nativeAudio.preloadSimple('alarmSound', 'assets/sounds/alarm.wav').catch((error) => {
-                  this.showMessage("There was an error loading the alarm sound");
-                });
-                //this.alarms = this.alarmService.getAlarms();
               }
 
   ionViewDidLoad() {
@@ -197,8 +191,10 @@ export class AlarmMap {
       });
     }
 
-    if(this.shouldBackgroundGeoBeOn() && !this.backgroundGeoStarted) {
-      this.startBackgroundGeo();
+    if(this.shouldBackgroundGeoBeOn()) {
+      this.backgroundGeoService.StartBackgroundGeo();
+    } else {
+      this.backgroundGeoService.StopBackgroundGeo();
     }
   }
 
@@ -265,82 +261,21 @@ export class AlarmMap {
 
   shouldBackgroundGeoBeOn(): boolean {
     if(this.alarms == null || this.alarms.length == 0) {
-      this.backgroundGeo.stop();
-      this.backgroundGeoStarted = false;
       return false;
     } else {
       var anyActiveAlarm: boolean = false;
       for(var alarm of this.alarms) {
         if(alarm.on) {
           anyActiveAlarm = true;
+          break;
         }
       }
       if(!anyActiveAlarm) {
-        this.backgroundGeo.stop();
-        this.backgroundGeoStarted = false;
         return false;
       }
     }
 
     return true;
-  }
-
-  startBackgroundGeo() {
-    // Start the background geolocation for the alarms
-    const config: BackgroundGeolocationConfig = {
-          desiredAccuracy: 10,
-          stationaryRadius: 10,
-          distanceFilter: 10,
-          debug: false, //  enable this hear sounds for background-geolocation life-cycle.
-          stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-    };
-
-    this.backgroundGeo.configure(config)
-      .subscribe((location: BackgroundGeolocationResponse) => {
-        console.log(location);
-
-        let lat1 = location.latitude;
-        let lon1 = location.longitude;
-
-        for(var alarm of this.alarms) {
-          if(alarm.on) {
-            let lat2 = alarm.position.lat;
-            let lon2 = alarm.position.lng;
-            let distance = this.calculateDistance(lat1,lon1,lat2,lon2);
-            if(distance < alarm.distance * 1000) {
-              // We are within distance
-              this.nativeAudio.play('alarmSound');
-            }
-          }
-        }
-
-        // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
-        // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
-        // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-        this.backgroundGeo.finish(); // FOR IOS ONLY
-
-    });
-
-    // start recording location
-    this.backgroundGeo.start();
-    this.backgroundGeoStarted = true;
-  }
-
-  calculateDistance(lat1:number,lon1:number,lat2:number,lon2:number): number {
-    var R = 6371e3; // metres
-    var φ1 = lat1*Math.PI/180;
-    var φ2 = lat2*Math.PI/180;
-    var Δφ = (lat2-lat1)*Math.PI/180;
-    var Δλ = (lon2-lon1)*Math.PI/180;
-
-    var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-    var d = R * c;
-
-    return d;
   }
 
   showMessage(msg: string) {
