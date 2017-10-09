@@ -6,6 +6,7 @@ import { Alarm } from '../models/alarm';
 import { AlarmService } from './alarm.service';
 import { MathService } from './math.service';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { LocalNotifications, ILocalNotification } from '@ionic-native/local-notifications';
 
 @Injectable()
 export class BackgroundGeoService {
@@ -16,10 +17,19 @@ export class BackgroundGeoService {
               private alarmService: AlarmService,
               private mathService: MathService,
               private nativeAudio: NativeAudio,
-              private toastCtrl: ToastController) {
-                this.alarms = this.alarmService.getAlarms();
+              private toastCtrl: ToastController,
+              private localNotifications: LocalNotifications) {
+                //this.alarms = this.alarmService.getAlarms();
                 this.nativeAudio.preloadSimple('alarmSound', 'assets/sounds/alarm.wav').catch((error) => {
                   this.showMessage("There was an error loading the alarm sound");
+                });
+
+                this.localNotifications.on("click", (notification) => {
+                  this.notificationTriggered(notification);
+                });
+
+                this.localNotifications.on("cancel", (notification) => {
+                  this.notificationTriggered(notification);
                 });
               }
 
@@ -28,10 +38,13 @@ export class BackgroundGeoService {
     this.backgroundGeoStarted = false;
   }
 
-  public StartBackgroundGeo() {
-    if(this.backgroundGeoStarted) {
-      return;
-    }
+  public StartBackgroundGeo(alarms: Alarm[]) {
+    //this.showMessage("Background geo started");
+    //this.showMessage("Alarm count = "+this.alarms.length);
+    this.alarms = alarms;
+    //if(this.backgroundGeoStarted) {
+    //  return;
+    //}
 
     // Start the background geolocation for the alarms
     const config: BackgroundGeolocationConfig = {
@@ -45,6 +58,7 @@ export class BackgroundGeoService {
     this.backgroundGeo.configure(config)
       .subscribe((location: BackgroundGeolocationResponse) => {
         console.log(location);
+        //this.showMessage("Background geo trigger");
 
         let lat1 = location.latitude;
         let lon1 = location.longitude;
@@ -58,6 +72,12 @@ export class BackgroundGeoService {
               // We are within distance
               // Play the sound
               this.nativeAudio.play('alarmSound');
+
+              this.localNotifications.schedule({
+                id: alarm.id,
+                text: 'The alarm for '+alarm.title+' is ringing !',
+                data: { theAlarm: alarm }
+              });
             }
           }
         }
@@ -72,6 +92,18 @@ export class BackgroundGeoService {
     // start recording location
     this.backgroundGeo.start();
     this.backgroundGeoStarted = true;
+  }
+
+  notificationTriggered(notification: any) {
+    var a: Alarm = notification.data.theAlarm;
+    this.showMessage("Local notification triggered, alarm: "+a.title);
+    for(let alarm of this.alarms) {
+      if(alarm.title === a.title) {
+        alarm.on = false;
+        this.alarmService.switchAlarmState();
+      }
+    }
+    this.localNotifications.cancel(notification.id);
   }
 
   showMessage(msg: string) {

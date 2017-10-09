@@ -20,7 +20,6 @@ import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
-
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
 const cloudSettings: CloudSettings = {
@@ -45,7 +44,7 @@ const cloudSettings: CloudSettings = {
   ],
   providers: [
     StatusBar, GoogleMaps, SplashScreen, BackgroundGeolocation, Geolocation, AlarmService, NativeAudio,
-    LocalNotifications, MathService, BackgroundGeoService,
+    LocalNotifications, MathService, BackgroundGeoService, LocalNotifications,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

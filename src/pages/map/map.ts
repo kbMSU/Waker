@@ -192,7 +192,7 @@ export class AlarmMap {
     }
 
     if(this.shouldBackgroundGeoBeOn()) {
-      this.backgroundGeoService.StartBackgroundGeo();
+      this.backgroundGeoService.StartBackgroundGeo(this.alarms);
     } else {
       this.backgroundGeoService.StopBackgroundGeo();
     }
