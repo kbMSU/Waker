@@ -19,7 +19,6 @@ export class BackgroundGeoService {
               private nativeAudio: NativeAudio,
               private toastCtrl: ToastController,
               private localNotifications: LocalNotifications) {
-                //this.alarms = this.alarmService.getAlarms();
                 this.nativeAudio.preloadSimple('alarmSound', 'assets/sounds/alarm.wav').catch((error) => {
                   this.showMessage("There was an error loading the alarm sound");
                 });
@@ -39,12 +38,7 @@ export class BackgroundGeoService {
   }
 
   public StartBackgroundGeo(alarms: Alarm[]) {
-    //this.showMessage("Background geo started");
-    //this.showMessage("Alarm count = "+this.alarms.length);
     this.alarms = alarms;
-    //if(this.backgroundGeoStarted) {
-    //  return;
-    //}
 
     // Start the background geolocation for the alarms
     const config: BackgroundGeolocationConfig = {
@@ -58,7 +52,6 @@ export class BackgroundGeoService {
     this.backgroundGeo.configure(config)
       .subscribe((location: BackgroundGeolocationResponse) => {
         console.log(location);
-        //this.showMessage("Background geo trigger");
 
         let lat1 = location.latitude;
         let lon1 = location.longitude;
@@ -76,7 +69,7 @@ export class BackgroundGeoService {
               this.localNotifications.schedule({
                 id: alarm.id,
                 text: 'The alarm for '+alarm.title+' is ringing !',
-                data: { theAlarm: alarm }
+                data: { title: alarm.title }
               });
             }
           }
@@ -94,11 +87,12 @@ export class BackgroundGeoService {
     this.backgroundGeoStarted = true;
   }
 
-  notificationTriggered(notification: any) {
-    var a: Alarm = notification.data.theAlarm;
-    this.showMessage("Local notification triggered, alarm: "+a.title);
+  notificationTriggered(notification: ILocalNotification) {
+    let data = notification.data;
+    let jsonData: JSON = JSON.parse(data);
+    let title = jsonData["title"];
     for(let alarm of this.alarms) {
-      if(alarm.title === a.title) {
+      if(alarm.title === title) {
         alarm.on = false;
         this.alarmService.switchAlarmState();
       }

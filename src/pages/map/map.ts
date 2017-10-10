@@ -49,8 +49,15 @@ export class AlarmMap {
   }
 
   ionViewWillEnter() {
-    // Set up a subscription to get future alarms
+    // When the alarms are loaded
     this.events.subscribe("alarm:loaded", () => {
+      if(this.mapLoaded) {
+        this.placeAlarmMarkers();
+      }
+    });
+
+    // When existing alarms are updated (switchAlarmState from the notification)
+    this.events.subscribe("alarm:updated", () => {
       if(this.mapLoaded) {
         this.placeAlarmMarkers();
       }
@@ -73,6 +80,7 @@ export class AlarmMap {
   ionViewWillLeave() {
     this.events.unsubscribe("alarm:loaded");
     this.events.unsubscribe("alarm:deleted");
+    this.events.unsubscribe("alarm:updated");
   }
 
   loadMap() {
