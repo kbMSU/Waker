@@ -4,16 +4,9 @@ import { GoogleMaps, GoogleMap, GoogleMapsEvent, LatLng,
          CameraPosition, MarkerOptions, Marker, Geocoder,
          GeocoderResult } from '@ionic-native/google-maps';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
-import { NativeAudio } from '@ionic-native/native-audio';
-import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
-
-import { Observable } from 'rxjs/Observable';
-
 import { AlarmDetails } from '../alarm-details/alarm-details';
-
 import { Alarm } from '../../models/alarm';
 import { AlarmService } from '../../services/alarm.service';
-import { MathService } from '../../services/math.service';
 import { BackgroundGeoService } from '../../services/background-geo.service';
 
 @Component({
