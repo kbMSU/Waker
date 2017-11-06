@@ -1,98 +1,98 @@
 {
-    "name": "Waker",
-    "version": "0.0.1",
-    "author": "Ionic Framework",
-    "homepage": "http://ionicframework.com/",
-    "private": true,
-    "scripts": {
-        "clean": "ionic-app-scripts clean",
-        "build": "ionic-app-scripts build",
-        "lint": "ionic-app-scripts lint",
-        "ionic:build": "ionic-app-scripts build",
-        "ionic:serve": "ionic-app-scripts serve"
+  "name": "Waker",
+  "version": "1.0.1",
+  "author": "Ionic Framework",
+  "homepage": "http://ionicframework.com/",
+  "private": true,
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve"
+  },
+  "dependencies": {
+    "@angular/common": "4.1.3",
+    "@angular/compiler": "4.1.3",
+    "@angular/compiler-cli": "4.1.3",
+    "@angular/core": "4.1.3",
+    "@angular/forms": "4.1.3",
+    "@angular/http": "4.1.3",
+    "@angular/platform-browser": "4.1.3",
+    "@angular/platform-browser-dynamic": "4.1.3",
+    "@ionic-native/background-geolocation": "^4.3.0",
+    "@ionic-native/core": "3.12.1",
+    "@ionic-native/geolocation": "^4.1.0",
+    "@ionic-native/google-maps": "^4.1.0",
+    "@ionic-native/local-notifications": "^4.3.1",
+    "@ionic-native/native-audio": "^4.3.0",
+    "@ionic-native/splash-screen": "3.12.1",
+    "@ionic-native/status-bar": "3.12.1",
+    "@ionic/cloud-angular": "^0.12.0",
+    "@ionic/storage": "^2.0.1",
+    "cordova-android": "^6.2.3",
+    "cordova-browser": "^4.1.0",
+    "cordova-ios": "^4.4.0",
+    "cordova-plugin-add-swift-support": "^1.7.0",
+    "cordova-plugin-app-event": "file:node_modules/cordova-plugin-app-event",
+    "cordova-plugin-compat": "^1.1.0",
+    "cordova-plugin-console": "^1.0.5",
+    "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-geolocation": "^2.4.3",
+    "cordova-plugin-googlemaps": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps",
+    "cordova-plugin-googlemaps-sdk": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk.git",
+    "cordova-plugin-mauron85-background-geolocation": "^2.2.5",
+    "cordova-plugin-nativeaudio": "^3.0.9",
+    "cordova-plugin-nativegeocoder": "^2.0.1",
+    "cordova-plugin-splashscreen": "^4.0.3",
+    "cordova-plugin-statusbar": "^2.2.2",
+    "cordova-plugin-whitelist": "^1.3.1",
+    "cordova-sqlite-storage": "^2.0.4",
+    "de.appplant.cordova.plugin.local-notification": "^0.8.5",
+    "ionic-angular": "3.5.3",
+    "ionic-plugin-keyboard": "^2.2.1",
+    "ionicons": "3.0.0",
+    "rxjs": "5.4.0",
+    "sw-toolbox": "3.6.0",
+    "zone.js": "0.8.12"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "2.0.2",
+    "ionic": "3.16.0",
+    "typescript": "2.3.4"
+  },
+  "description": "An Ionic project",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-googlemaps": {
+        "API_KEY_FOR_ANDROID": "AIzaSyD437s094I9PE1au2L9eMnF5R8CJFOAzQU",
+        "API_KEY_FOR_IOS": "AIzaSyCsjgdgO6Gb3Xdnwia7l9gval_1Duiqfp4",
+        "LOCATION_WHEN_IN_USE_DESCRIPTION": "Show your location on the map",
+        "LOCATION_ALWAYS_USAGE_DESCRIPTION": "Trace your location on the map"
+      },
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-whitelist": {},
+      "ionic-plugin-keyboard": {},
+      "cordova-plugin-geolocation": {
+        "GEOLOCATION_USAGE_DESCRIPTION": " "
+      },
+      "cordova-plugin-nativegeocoder": {},
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-mauron85-background-geolocation": {
+        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
+        "CONTENT_AUTHORITY": "$PACKAGE_NAME",
+        "ALWAYS_USAGE_DESCRIPTION": "This app requires background location tracking"
+      },
+      "cordova-plugin-nativeaudio": {},
+      "de.appplant.cordova.plugin.local-notification": {}
     },
-    "dependencies": {
-        "@angular/common": "4.1.3",
-        "@angular/compiler": "4.1.3",
-        "@angular/compiler-cli": "4.1.3",
-        "@angular/core": "4.1.3",
-        "@angular/forms": "4.1.3",
-        "@angular/http": "4.1.3",
-        "@angular/platform-browser": "4.1.3",
-        "@angular/platform-browser-dynamic": "4.1.3",
-        "@ionic-native/background-geolocation": "^4.3.0",
-        "@ionic-native/core": "3.12.1",
-        "@ionic-native/geolocation": "^4.1.0",
-        "@ionic-native/google-maps": "^4.1.0",
-        "@ionic-native/local-notifications": "^4.3.1",
-        "@ionic-native/native-audio": "^4.3.0",
-        "@ionic-native/splash-screen": "3.12.1",
-        "@ionic-native/status-bar": "3.12.1",
-        "@ionic/cloud-angular": "^0.12.0",
-        "@ionic/storage": "^2.0.1",
-        "cordova-android": "^6.2.3",
-        "cordova-browser": "^4.1.0",
-        "cordova-ios": "^4.4.0",
-        "cordova-plugin-add-swift-support": "^1.7.0",
-        "cordova-plugin-app-event": "file:node_modules/cordova-plugin-app-event",
-        "cordova-plugin-compat": "^1.1.0",
-        "cordova-plugin-console": "^1.0.5",
-        "cordova-plugin-device": "^1.1.4",
-        "cordova-plugin-geolocation": "^2.4.3",
-        "cordova-plugin-googlemaps": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps",
-        "cordova-plugin-googlemaps-sdk": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk.git",
-        "cordova-plugin-mauron85-background-geolocation": "^2.2.5",
-        "cordova-plugin-nativeaudio": "^3.0.9",
-        "cordova-plugin-nativegeocoder": "^2.0.1",
-        "cordova-plugin-splashscreen": "^4.0.3",
-        "cordova-plugin-statusbar": "^2.2.2",
-        "cordova-plugin-whitelist": "^1.3.1",
-        "cordova-sqlite-storage": "^2.0.4",
-        "de.appplant.cordova.plugin.local-notification": "^0.8.5",
-        "ionic-angular": "3.5.3",
-        "ionic-plugin-keyboard": "^2.2.1",
-        "ionicons": "3.0.0",
-        "rxjs": "5.4.0",
-        "sw-toolbox": "3.6.0",
-        "zone.js": "0.8.12"
-    },
-    "devDependencies": {
-        "@ionic/app-scripts": "2.0.2",
-        "ionic": "3.12.0",
-        "typescript": "2.3.4"
-    },
-    "description": "An Ionic project",
-    "cordova": {
-        "plugins": {
-            "cordova-plugin-googlemaps": {
-                "API_KEY_FOR_ANDROID": "AIzaSyD437s094I9PE1au2L9eMnF5R8CJFOAzQU",
-                "API_KEY_FOR_IOS": "AIzaSyCsjgdgO6Gb3Xdnwia7l9gval_1Duiqfp4",
-                "LOCATION_WHEN_IN_USE_DESCRIPTION": "Show your location on the map",
-                "LOCATION_ALWAYS_USAGE_DESCRIPTION": "Trace your location on the map"
-            },
-            "cordova-plugin-console": {},
-            "cordova-plugin-device": {},
-            "cordova-plugin-splashscreen": {},
-            "cordova-plugin-statusbar": {},
-            "cordova-plugin-whitelist": {},
-            "ionic-plugin-keyboard": {},
-            "cordova-plugin-geolocation": {
-                "GEOLOCATION_USAGE_DESCRIPTION": " "
-            },
-            "cordova-plugin-nativegeocoder": {},
-            "cordova-sqlite-storage": {},
-            "cordova-plugin-mauron85-background-geolocation": {
-                "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
-                "CONTENT_AUTHORITY": "$PACKAGE_NAME",
-                "ALWAYS_USAGE_DESCRIPTION": "This app requires background location tracking"
-            },
-            "cordova-plugin-nativeaudio": {},
-            "de.appplant.cordova.plugin.local-notification": {}
-        },
-        "platforms": [
-            "android",
-            "browser",
-            "ios"
-        ]
-    }
+    "platforms": [
+      "android",
+      "browser",
+      "ios"
+    ]
+  }
 }
