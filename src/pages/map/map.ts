@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, ToastController, Events, ActionSheetController } from 'ionic-angular';
 import { GoogleMaps, GoogleMap, GoogleMapsEvent, LatLng,
          CameraPosition, MarkerOptions, Marker, Geocoder,
-         GeocoderResult } from '@ionic-native/google-maps';
+         GeocoderResult, 
+         BaseArrayClass} from '@ionic-native/google-maps';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { AlarmDetails } from '../alarm-details/alarm-details';
 import { Alarm } from '../../models/alarm';
@@ -142,16 +143,27 @@ export class AlarmMap {
 
   updateAddress(latln: LatLng) {
     this.currentAddress = "Getting address ...";
-    this.geocoder.geocode({'position':latln}).then((results: [GeocoderResult]) => {
-      if(results.length > 0) {
-        let result = results[0];
-        this.currentAddress = result.subThoroughfare + " " + result.thoroughfare;
+    this.geocoder.geocode({'position':latln}).then(results => {
+      if(this.hasMultipleGeocoderResults(results)) {
+        var multipleResults = <BaseArrayClass<GeocoderResult>>results;
+        for(var result of multipleResults.getArray()) {
+          let streetNumber = result.subThoroughfare;
+          let streetName = result.thoroughfare;
+          if(streetNumber !== undefined && streetName !== undefined) {
+            this.currentAddress = streetNumber + " " + streetName;
+          }
+        }
       } else {
-        this.currentAddress = "Address not found ...";
+        var singleResult = <GeocoderResult>results;
+        this.currentAddress = singleResult.subThoroughfare + " " + singleResult.thoroughfare;
       }
     }).catch((error) => {
       this.showMessage(error);
     });
+  }
+
+  hasMultipleGeocoderResults(results: GeocoderResult | BaseArrayClass<GeocoderResult>): results is BaseArrayClass<GeocoderResult> {
+    return (<BaseArrayClass<GeocoderResult>>results).getLength !== undefined;
   }
 
   placeAlarmMarkers() {
